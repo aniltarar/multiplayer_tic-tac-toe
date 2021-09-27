@@ -7,9 +7,12 @@ app.config['SECRET_KEY'] = config('FLASK_SECRET_KEY')
 socketio = SocketIO(app)
 
 ############################ HOME PAGE ################################
-
-@app.route('/' , methods=["GET" ,"POST"])
+@app.route('/')
 def home():
+    return render_template("index.html")
+
+@app.route('/multiplayer-tic-tac-toe' , methods=["GET" ,"POST"])
+def tic_tac_toe():
     return render_template("tic-tac-toe.jinja")
 
 ########################## SOCKET CONNECTIONS #######################################################
@@ -50,12 +53,15 @@ def game_type(type):
             elif game_id != i[-10:]:
                 user_id = request.sid
                 emit('session_id' , "none" , room = user_id)
+    
+    print(games)
             
 
 # Listenening for the play of 'X' and 'O' then broadcast it to the players in individual rooms
 
 @socketio.on('message')
 def receive_message_event(message):
+    print(message)
     # Delete disconnected user from the games dictionary.
     if message == "disconnected":
         for i in games:
@@ -83,7 +89,7 @@ def receive_message_event(message):
                     socketio.send('draw' , room = room_1)
                     socketio.send('draw' , room = room_2)
                 
-            elif request.sid == games[i][1].split("-")[1]:
+            elif len(games[i]) > 1 and request.sid == games[i][1].split("-")[1]:
                 room_1 = i
                 room_2 = games[i][1].split("-")[1]
                 user_name = games[i][1].split("-")[0]
@@ -107,7 +113,7 @@ def send_chat_message(chat_message):
             room_2 = games[i][1].split("-")[1]
             socketio.emit('private_chat_message', f"{user_1}: {chat_message}" , room = room_1)
             socketio.emit('private_chat_message', f"{user_1}: {chat_message}" , room = room_2)
-        elif request.sid == games[i][1].split("-")[1]:
+        elif len(games[i]) > 1 and request.sid == games[i][1].split("-")[1]:
             user_2 = games[i][1].split("-")[0]
             room_1 = i
             room_2 = games[i][1].split("-")[1]
@@ -115,4 +121,4 @@ def send_chat_message(chat_message):
             socketio.emit('private_chat_message', f"{user_2}: {chat_message}", room = room_2)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0')
+    socketio.run(app, host='0.0.0.0', port=9000)
