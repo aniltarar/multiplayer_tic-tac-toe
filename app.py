@@ -115,4 +115,4 @@ def send_chat_message(chat_message):
             socketio.emit('private_chat_message', f"{user_2}: {chat_message}", room = room_2)
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port= 9000)
+    socketio.run(app, host='0.0.0.0')
