@@ -70,7 +70,7 @@ def receive_message_event(message):
     else:
         for rooms in all_rooms:
             print(fetch_player2(rooms[0]))
-            if message == "restart" and request.sid == (fetch_player2(rooms[0])[0][0].split(" "))[0]:
+            if message == "restart" and (request.sid == (fetch_player2(rooms[0])[0][0].split(" "))[0] or request.sid == rooms[0]):
                 room_1 = rooms[0]
                 room_2 = (fetch_player2(rooms[0])[0][0].split(" "))[0]
                 socketio.send("restart", room = room_1)
