@@ -60,45 +60,31 @@ def game_type(type):
 
 @socketio.on('message')
 def receive_message_event(message):
-    print(message)
     all_rooms = fetch_all_room_id()
     # Delete disconnected user from the games dictionary.
     if message == "disconnected":
         for rooms in all_rooms:
             if rooms[0] == request.sid:
                 delete_game(rooms[0])
-        print(message)
+       
     else:
         for rooms in all_rooms:
-            # if message == "restart" and request.sid == rooms[0] or (fetch_player2(rooms[0])[0][0].split(" "))[0]:
-            #     room_1 = rooms[0]
-            #     room_2 = (fetch_player2(rooms[0])[0][0].split(" "))[0]
-            #     socketio.send("restart", room = room_1)
-            #     socketio.send("restart", room = room_2)
+            print(fetch_player2(rooms[0]))
+            if message == "restart" and request.sid == (fetch_player2(rooms[0])[0][0].split(" "))[0]:
+                room_1 = rooms[0]
+                room_2 = (fetch_player2(rooms[0])[0][0].split(" "))[0]
+                socketio.send("restart", room = room_1)
+                socketio.send("restart", room = room_2)
 
             if request.sid == rooms[0]:
-                print(message + "received")
+               
                 room_1 = rooms[0]
                 room_2 = (fetch_player2(rooms[0])[0][0].split(" "))[0]
                 user_name = fetch_player1(rooms[0])[0][0]
-                print(user_name)
                 socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
-                sleep(0.1)
-                socketio.send(message, room = room_2)
+                print("player1 sent: " + message)
+                
+
                 if(message == 'win'):
                     socketio.send(f"{user_name} <br> WINS!!!", room = room_1)
                     socketio.send(f"{user_name} <br> WINS!!!", room = room_2)
@@ -116,24 +102,10 @@ def receive_message_event(message):
                 room_1 = rooms[0]
                 room_2 = (fetch_player2(rooms[0])[0][0].split(" "))[0]
                 user_name = (fetch_player2(rooms[0])[0][0].split(" "))[1]
-                print(user_name)
                 socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
-                sleep(0.1)
-                socketio.send(message, room = room_1)
+                print("player2 sent: " + message)
+                
+                
                 if(message == 'win'):
                     socketio.send(f"{user_name} <br> WINS!!!", room = room_1)
                     socketio.send(f"{user_name} <br> WINS!!!", room = room_2)
