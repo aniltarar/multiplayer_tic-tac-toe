@@ -18,7 +18,7 @@ created_on = now.strftime("%Y-%m-%d %H:%M:%S")
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("tic-tac-toe.jinja")
 
 
 @app.route('/multiplayer-tic-tac-toe', methods=["GET", "POST"])
@@ -164,4 +164,4 @@ def send_chat_message(chat_message):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=9000)
+    socketio.run(app, host='0.0.0.0', port=8000)

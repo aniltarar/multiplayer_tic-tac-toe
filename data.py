@@ -1,7 +1,7 @@
 import psycopg2 as data
 
 def write_data(query, params):
-    conn = data.connect("dbname=tic-tac-toe user=pi")
+    conn = data.connect("dbname=tic-tac-toe user=server")
     cur = conn.cursor()
     cur.execute(query , params)
     conn.commit()
@@ -9,7 +9,7 @@ def write_data(query, params):
     conn.close()
 
 def fetch_data(query):
-    conn = data.connect("dbname=tic-tac-toe user=pi")
+    conn = data.connect("dbname=tic-tac-toe user=server")
     cur = conn.cursor()
     cur.execute(query)
     result = cur.fetchall()
@@ -18,7 +18,7 @@ def fetch_data(query):
     return result
 
 def fetch_data_with_param(query , param):
-    conn = data.connect("dbname=tic-tac-toe user=pi")
+    conn = data.connect("dbname=tic-tac-toe user=server")
     cur = conn.cursor()
     cur.execute(query, param)
     result = cur.fetchall()
